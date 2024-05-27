@@ -9,6 +9,7 @@ import (
 type AuthRepository interface {
 	EmailExist(email string) bool
 	Register(req *entity.User) error
+	GetUserByEmail(email string) (*entity.User, error)
 }
 
 /*
@@ -39,4 +40,12 @@ func (r *authRepository) EmailExist(email string) bool {
 	err := r.db.First(&user, "email = ?", email).Error
 
 	return err == nil
+}
+
+func (r *authRepository) GetUserByEmail(email string) (*entity.User, error) {
+	var user entity.User
+
+	err := r.db.First(&user, "email = ?", email).Error
+
+	return &user, err
 }
